@@ -12,7 +12,39 @@ quoteElement.textContent = quote;
 
 // Register Service Worker
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js')
+  navigator.serviceWorker.register('/PWA/service-worker.js') // ✅ Update this path if hosted in /PWA
     .then(() => console.log("✅ Service Worker Registered"))
     .catch(err => console.error("Service Worker Failed:", err));
 }
+
+// PWA Install Button Logic
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  // Create install button
+  const installBtn = document.createElement('button');
+  installBtn.textContent = "📲 Install App";
+  installBtn.style.padding = "10px";
+  installBtn.style.margin = "20px";
+  installBtn.style.borderRadius = "10px";
+  installBtn.style.backgroundColor = "#007BFF";
+  installBtn.style.color = "white";
+  installBtn.style.border = "none";
+
+  document.body.appendChild(installBtn);
+
+  installBtn.addEventListener('click', () => {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(choice => {
+      if (choice.outcome === 'accepted') {
+        console.log('✅ User accepted the install prompt');
+      } else {
+        console.log('❌ User dismissed the install prompt');
+      }
+      deferredPrompt = null;
+    });
+  });
+});
