@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Quotes</title>
+ <link rel="manifest" href="/PWA/manifest.json">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/PWA/service-worker.js')
+      .then(() => console.log("SW Registered"))
+      .catch(err => console.error(err));
+  }
+</script>
+<body>
+  <div class="app">
+    <h1>🌟 Daily Quote</h1>
+    <p id="quote">Loading quote...</p>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>
